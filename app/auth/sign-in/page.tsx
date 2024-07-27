@@ -3,32 +3,36 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { loginSchema, LoginSchema } from "@/lib/schemas/loginSchema";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export default function SignUp() {
+export default function SignIn() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm();
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+  });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: LoginSchema) => {
     console.log(data);
   };
 
   return (
     <div className="flex flex-col h-screen justify-center items-center">
       <div className="flex flex-col items-center mb-5">
-        <p className="font-semibold text-3xl">Sign up</p>
+        <p className="font-semibold text-3xl">Sign in</p>
         <p className="text-muted/80 text-sm mt-3">
-          Already have an account?{" "}
+          Don't have an account yet?{" "}
           <Link
-            href={"sign-in"}
+            href={"sign-up"}
             className="underline text-primary font-semibold cursor-pointer"
           >
-            Sign in here
+            Register here
           </Link>
         </p>
       </div>
@@ -36,33 +40,11 @@ export default function SignUp() {
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid w-full items-center gap-4">
-              {/* Name Field */}
-              <div className="flex flex-col space-y-3">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  {...register("name", { required: "Name is required" })}
-                  id="name"
-                  placeholder="Enter your name"
-                  autoFocus
-                  className={`border-muted/80 ${
-                    errors.name ? "border-red-500" : ""
-                  }`}
-                />
-                {errors.name && (
-                  <p className="text-red-500 text-xs">{errors.name.message}</p>
-                )}
-              </div>
               {/* Email Field */}
               <div className="flex flex-col space-y-3">
                 <Label htmlFor="email">Email</Label>
                 <Input
-                  {...register("email", {
-                    required: "Email is required",
-                    pattern: {
-                      value: /^\S+@\S+$/i,
-                      message: "Entered value does not match email format",
-                    },
-                  })}
+                  {...register("email")}
                   id="email"
                   type="email"
                   placeholder="Enter your email"
@@ -78,9 +60,7 @@ export default function SignUp() {
               <div className="flex flex-col space-y-3">
                 <Label htmlFor="password">Password</Label>
                 <Input
-                  {...register("password", {
-                    required: "Password is required",
-                  })}
+                  {...register("password")}
                   id="password"
                   type="password"
                   autoComplete="new-password"
@@ -96,12 +76,20 @@ export default function SignUp() {
                 )}
               </div>
             </div>
-            <Button className="w-full mt-6" disabled={isSubmitting}>
+            <Button className="w-full mt-6" disabled={isSubmitting || !isValid}>
               {isSubmitting ? "Signing in..." : "Sign in"}
             </Button>
           </form>
         </CardContent>
       </Card>
+      <div className="flex flex-col items-center mt-5">
+        <p className="text-muted/80 text-sm mt-3">
+          Forgot your password?{" "}
+          <span className="underline text-primary font-semibold cursor-pointer">
+            Reset
+          </span>
+        </p>
+      </div>
     </div>
   );
 }
