@@ -7,7 +7,7 @@ import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
-export default function SignIn() {
+export default function SignUp() {
   const {
     register,
     handleSubmit,
@@ -21,14 +21,14 @@ export default function SignIn() {
   return (
     <div className="flex flex-col h-screen justify-center items-center">
       <div className="flex flex-col items-center mb-5">
-        <p className="font-semibold text-3xl">Sign in</p>
+        <p className="font-semibold text-3xl">Sign up</p>
         <p className="text-muted/80 text-sm mt-3">
-          Don't have an account yet?{" "}
+          Already have an account?{" "}
           <Link
-            href={"sign-up"}
+            href={"sign-in"}
             className="underline text-primary font-semibold cursor-pointer"
           >
-            Register here
+            Sign in here
           </Link>
         </p>
       </div>
@@ -36,6 +36,22 @@ export default function SignIn() {
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid w-full items-center gap-4">
+              {/* Name Field */}
+              <div className="flex flex-col space-y-3">
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  {...register("name", { required: "Name is required" })}
+                  id="name"
+                  placeholder="Enter your name"
+                  autoFocus
+                  className={`border-muted/80 ${
+                    errors.name ? "border-red-500" : ""
+                  }`}
+                />
+                {errors.name && (
+                  <p className="text-red-500 text-xs">{errors.name.message}</p>
+                )}
+              </div>
               {/* Email Field */}
               <div className="flex flex-col space-y-3">
                 <Label htmlFor="email">Email</Label>
@@ -86,14 +102,6 @@ export default function SignIn() {
           </form>
         </CardContent>
       </Card>
-      <div className="flex flex-col items-center mt-5">
-        <p className="text-muted/80 text-sm mt-3">
-          Forgot your password?{" "}
-          <span className="underline text-primary font-semibold cursor-pointer">
-            Reset
-          </span>
-        </p>
-      </div>
     </div>
   );
 }
