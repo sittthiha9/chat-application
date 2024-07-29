@@ -1,15 +1,17 @@
-"use client";
+"use client";;
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginSchema, LoginSchema } from "@/lib/schemas/loginSchema";
-import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signUser } from "@/app/actions/authActions";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -19,7 +21,12 @@ export default function SignIn() {
   });
 
   const onSubmit = async (data: LoginSchema) => {
-    console.log(data);
+    const result = await signUser(data);
+    if (result.status === "success") {
+      router.push("/conversations");
+    } else {
+      console.log(result.error);
+    }
   };
 
   return (

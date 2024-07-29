@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { registerUser } from "@/app/actions/authActions";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
   const {
@@ -22,16 +23,13 @@ export default function SignUp() {
   });
 
   const { toast } = useToast();
+  const router = useRouter();
 
   const onSubmit = async (data: RegisterSchema) => {
     const result = await registerUser(data);
 
     if (result.status === "success") {
-      console.log("User registered successfully.");
-      toast({
-        title: "Success",
-        description: "User registered successfully.",
-      });
+      router.push("/auth/verify-account");
     } else {
       if (Array.isArray(result.error)) {
         result.error.forEach((e) => {
@@ -39,7 +37,6 @@ export default function SignUp() {
           setError(fieldName as keyof RegisterSchema, {
             message: e.message,
           });
-          console.log("Error:", fieldName, e.message);
           toast({
             title: "Error!",
             description: `${e.message}.`,
