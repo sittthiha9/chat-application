@@ -1,10 +1,17 @@
 import { auth } from "@/app/auth";
-import ConversationsClient from "@/components/ui/conversations/ConversationsClient"; 
+import { getFriendByUserId, getFriends } from "@/app/actions/friendsActions";
+import Conversations from "@/components/ui/conversations";
 
-const Conversations = async () => {
+const ConversationsPage = async () => {
   const session = await auth();
-
-  return <ConversationsClient user={session?.user} />;
+  const friends = await getFriends();
+  const friend = await getFriendByUserId("clz780mjf0003qk57fyesa74g");
+  console.log("🚀 ~ ConversationsPage ~ friend:", friend)
+  
+  return (
+    <Conversations user={session?.user} friends={friends}/>
+  )
 };
 
-export default Conversations;
+
+export default ConversationsPage;
