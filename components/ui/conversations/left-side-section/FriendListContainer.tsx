@@ -1,8 +1,8 @@
 "use client";
 import { Session } from "next-auth";
-import LeftSection from "./LeftSection";
+import FriendList from "@/components/ui/conversations/left-side-section/FriendList";
 import { Friend } from "@prisma/client";
-import ChatSection from "./ChatSection";
+import ChatBoxContainer from "./chat-section/ChatBoxContainer";
 
 type ChatListProps = {
   user?: Session["user"];
@@ -12,8 +12,8 @@ type ChatListProps = {
 const Conversations = ({ user, friends }: ChatListProps) => {
   return (
     <div className="h-screen bg-white flex">
-      <LeftSection user={user} friends={friends} />
-      <ChatSection />
+      <FriendList user={user} friends={friends} />
+      <ChatBoxContainer />
     </div>
   );
 };

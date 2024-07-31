@@ -29,6 +29,16 @@ export default function SignUp() {
     const result = await registerUser(data);
 
     if (result.status === "success") {
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      console.log("🚀 ~ onSubmit ~ otp:", otp)
+      await fetch("/api/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: data.email, otp }),
+      });
+      console.log("done")
       router.push("/auth/verify-account");
     } else {
       if (Array.isArray(result.error)) {

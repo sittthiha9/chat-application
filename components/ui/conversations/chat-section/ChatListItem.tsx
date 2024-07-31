@@ -1,18 +1,23 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Pin } from "lucide-react";
 import { Separator } from "../separator";
 import { Friend } from "@prisma/client";
-import { Button } from "../button";
 import { useRouter } from "next/navigation";
 
 type ChatListItemProps = {
   friend: Friend;
 };
 
-const ChatListItem = ({ friend }: ChatListItemProps) => {
+const ChatListItem = ({
+  friend,
+  isActive,
+}: ChatListItemProps & { isActive: boolean }) => {
   const router = useRouter();
+  const activeClass = isActive ? "bg-secondary/20" : "";
   return (
-    <div className="hover:bg-secondary/20">
+    <div
+      className={`hover:bg-secondary/20 rounded-lg cursor-pointer ${activeClass}`}
+      onClick={() => router.push(`/conversations/${friend.userId}`)}
+    >
       <div className="ml-5 flex gap-5 w-full p-2">
         <Avatar>
           <AvatarImage src={friend.image ?? undefined} className="bg-auto" />
@@ -40,10 +45,6 @@ const ChatListItem = ({ friend }: ChatListItemProps) => {
           </div>
         </div>
       </div>
-      <Button onClick={() => router.push(`/friend/${friend.userId}`)}>
-        Detail
-      </Button>
-      <Separator className="border-[1px] border-gray-200" />
     </div>
   );
 };
