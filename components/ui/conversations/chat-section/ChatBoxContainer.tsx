@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../../avatar";
 import { EllipsisVertical } from "lucide-react";
 import Chats from "./Chats";
 import Footer from "./Footer";

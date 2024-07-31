@@ -2,7 +2,7 @@
 import { Session } from "next-auth";
 import FriendList from "@/components/ui/conversations/left-side-section/FriendList";
 import { Friend } from "@prisma/client";
-import ChatBoxContainer from "./chat-section/ChatBoxContainer";
+import ChatBoxContainer from "../chat-section/ChatBoxContainer";
 
 type ChatListProps = {
   user?: Session["user"];

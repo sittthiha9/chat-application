@@ -1,28 +1,28 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent} from "@/components/ui/card";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { registerSchema, RegisterSchema } from "@/lib/schemas/registerSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { registerUser } from "@/app/actions/authActions";
-import { useToast } from "@/components/ui/use-toast";
-import { ToastAction } from "@/components/ui/toast";
-import { useRouter } from "next/navigation";
+import {useForm} from "react-hook-form";
+import {registerSchema, RegisterSchema} from "@/lib/schemas/registerSchema";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {registerUser} from "@/app/actions/authActions";
+import {useToast} from "@/components/ui/use-toast";
+import {ToastAction} from "@/components/ui/toast";
+import {useRouter} from "next/navigation";
 
 export default function SignUp() {
   const {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting, isValid },
+    formState: {errors, isSubmitting, isValid},
   } = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
   });
 
-  const { toast } = useToast();
+  const {toast} = useToast();
   const router = useRouter();
 
   const onSubmit = async (data: RegisterSchema) => {
@@ -30,15 +30,17 @@ export default function SignUp() {
 
     if (result.status === "success") {
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
-      console.log("🚀 ~ onSubmit ~ otp:", otp)
-      await fetch("/api/send", {
+      console.log("🚀 ~ onSubmit ~ otp:", otp);
+      await fetch("/api/send-mail", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: data.email, otp }),
+        body: JSON.stringify({email: data.email, otp}),
       });
-      console.log("done")
+      console.log("done");
+      localStorage.setItem('userEmail', data.email);
+      localStorage.setItem('awaitingVerification', 'true');
       router.push("/auth/verify-account");
     } else {
       if (Array.isArray(result.error)) {

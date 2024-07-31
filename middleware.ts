@@ -6,7 +6,7 @@ export function middleware(req: NextRequest) {
   const isLoggedIn = Boolean(sessionToken);
 
   const publicRoutes = ["/"];
-  const authRoutes = ["/auth/sign-in", "/auth/sign-up"];
+  const authRoutes = ["/auth/sign-in", "/auth/sign-up", "/auth/verify-account"];
 
   if (publicRoutes.includes(pathname)) {
     return NextResponse.next();

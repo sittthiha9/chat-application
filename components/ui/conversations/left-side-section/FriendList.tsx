@@ -1,16 +1,16 @@
 "use client";
 
-import { Separator } from "../separator";
-import { Input } from "../input";
+import { Separator } from "../../separator";
+import { Input } from "../../input";
 import { Search } from "lucide-react";
-import { ScrollArea } from "../scroll-area";
+import { ScrollArea } from "../../scroll-area";
 import { Session } from "next-auth";
-import ChatListItem from "./ChatListItem";
+import ChatListItem from "../chat-section/ChatListItem";
 import { Friend } from "@prisma/client";
 import ProfileSection from "./ProfileSection";
 import { useConversation } from "@/hooks/useConversation";
 import { useRouter } from "next/navigation";
-import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../../avatar";
 
 type FriendListProps = {
   user?: Session["user"];
